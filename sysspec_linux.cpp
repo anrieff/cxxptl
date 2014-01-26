@@ -1,6 +1,6 @@
 #if defined __linux__ || defined unix
 /***************************************************************************
- *   Copyright (C) 2006 by Veselin Georgiev                                *
+ *   Copyright (C) 2006, 2014 by Veselin Georgiev                          *
  *   anrieff@mxgail.com (change to gmail)                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

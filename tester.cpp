@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Veselin Georgiev                                *
+ *   Copyright (C) 2006, 2014 by Veselin Georgiev                          *
  *   anrieff@mxgail.com (change to gmail)                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@ struct DoWork: public Parallel {
 
 	double data[2000];
 
-	DoWork(int bla) : barrier(bla)
+	DoWork(int numThreads) : barrier(numThreads)
 	{}
 
 	void entry(int j, int k)
@@ -56,7 +56,7 @@ struct DoWork: public Parallel {
 int main(void)
 {
 	int n;
-	pool.preload_threads(8);
+	pool.preload_threads(8); // reserve 8 threads for work
 	printf("This PC has %d processors\n", get_processor_count());
 	for (n = 1; n <= 8; n*=2) {
 		printf("Using %d processors for internal calculations.\n", n);
