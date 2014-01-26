@@ -1,0 +1,5 @@
+*.o
+libcxxptl.a
+cxxptl.lib
+ptltest
+ptltest.exe
