@@ -52,10 +52,11 @@ lib_OBJECTS = \
 	sysspec_linux.$(OBJEXT) \
 	sysspec_win32.$(OBJEXT) \
 	sysspec_apple.$(OBJEXT) \
+	sysspec_bsd.$(OBJEXT) \
 	sysspec_posix.$(OBJEXT)
 
 SOURCES = cxxptl.cpp sysspec_linux.cpp sysspec_win32.cpp sysspec_apple.cpp\
-	sysspec_posix.cpp tester.cpp
+	sysspec_bsd.cpp sysspec_posix.cpp tester.cpp
 HEADERS = cxxptl.h
 INSTALL_PREFIX = /usr/local
 
