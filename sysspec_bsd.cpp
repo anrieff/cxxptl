@@ -1,8 +1,8 @@
 #if defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__ || defined __bsdi__ || defined __QNX__
 /***************************************************************************
  *   Copyright (C) 2014, Veselin Georgiev                                  *
- *                 2014, Robert Kausch                                     *
  *   anrieff@mxgail.com (change to gmail)                                  *
+ *                 2014, Robert Kausch                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,6 +19,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+// code for this is contributed by Robert Kausch and taken from libcpuid:
+// -- https://github.com/anrieff/libcpuid/issues/9#issuecomment-57055706
 
 #include <sys/sysctl.h>
 
