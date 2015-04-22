@@ -25,50 +25,56 @@
 
 ThreadPool pool;
 
+const int MAX_THREADS_TO_RUN = 8;
+
 struct DoWork: public Parallel {
 	Barrier barrier;
 
-	double data[2000];
+	double data[MAX_THREADS_TO_RUN];
 
-	DoWork(int numThreads) : barrier(numThreads)
+	DoWork(int numWorkerThreads) : barrier(numWorkerThreads)
 	{}
 
-	void entry(int j, int k)
+	// this method will be executed on up to 8 threads, depending on the
+	// second parameter to pool.run(). In the case of 8 threads, each of
+	// them will be invoked with a different threadIdx (ranging 0..7), while
+	// numWorkerThreads will be 8.
+	void entry(int threadIdx, int numWorkerThreads)
 	{
-		printf("DoWork::entry(%d, %d)\n", j, k); fflush(stdout);
-		data[j*100] = 0;
+		double partialSum = 0;
+		printf("DoWork::entry(%d, %d)\n", threadIdx, numWorkerThreads); fflush(stdout);
 		int i;
-		for (i = j; i < 500000000; i+=k) {
+		for (i = threadIdx; i < 500000000; i += numWorkerThreads) {
 			if (!i) continue;
 			double d = i;
-			data[j*100] += 1.0 / (d*d);
+			partialSum += 1.0 / (d * d);
 		}
-		printf("Thread %d: waiting for others...\n", j); fflush(stdout);
+		printf("Thread %d: waiting for others...\n", threadIdx); fflush(stdout);
 		barrier.checkout();
-		printf("Thread %d: continuing\n", j); fflush(stdout);
-		for (; i < 1000000000; i+=k) {
+		printf("Thread %d: continuing\n", threadIdx); fflush(stdout);
+		for (; i < 1000000000; i += numWorkerThreads) {
 			double d = i;
-			data[j*100] += 1.0 / (d*d);
+			partialSum += 1.0 / (d*d);
 		}
+		data[threadIdx] = partialSum;
 	}
 };
 
 int main(void)
 {
-	int n;
 	pool.preload_threads(8); // reserve 8 threads for work
 	printf("This PC has %d processors\n", get_processor_count());
-	for (n = 1; n <= 8; n*=2) {
-		printf("Using %d processors for internal calculations.\n", n);
-		DoWork dowork(n);
+	for (int numThreads = 1; numThreads <= MAX_THREADS_TO_RUN; numThreads *= 2) {
+		printf("Using %d processors for internal calculations.\n", numThreads);
+		DoWork dowork(numThreads);
 		time_t xt = time(NULL);
-		pool.run(&dowork, n);
+		pool.run(&dowork, numThreads);
 		xt = time(NULL) - xt;
 		
 		double sum = 0;
-		for (int i = 0; i < n; i++) {
-			printf("Processor %d gave %.5lf as result\n", i, dowork.data[i*100]);
-			sum += dowork.data[i*100];
+		for (int i = 0; i < numThreads; i++) {
+			printf("Processor %d gave %.5lf as result\n", i, dowork.data[i]);
+			sum += dowork.data[i];
 		}
 		printf("pi = %.9lf\n", sqrt(sum * 6.0));
 		printf("Result produced in %u sec\n", (unsigned)xt);
