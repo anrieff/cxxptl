@@ -3,3 +3,4 @@ libcxxptl.a
 cxxptl.lib
 ptltest
 ptltest.exe
+cxxptl_all.h

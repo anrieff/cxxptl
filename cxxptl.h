@@ -450,4 +450,4 @@ void set_best_affinity(int thread_index, bool mask[MAX_CPU_COUNT]);
  */
 int set_affinity_mask(const bool mask[MAX_CPU_COUNT]);
 
-#endif
+#endif // __CXXPTL_H__

@@ -90,6 +90,8 @@ endif
 
 $(BINARY): $(LIBRARY) tester.cpp cxxptl.h
 	$(CXX) $(OUTOPT)$(BINARY) $(OPTFLAGS) tester.cpp $(LIBRARY) $(LINKFLAGS)
-	
 
-.PHONY: all clean
+merge:
+	tools/make_amalgamation_version.py > cxxptl_all.h
+
+.PHONY: all clean merge
